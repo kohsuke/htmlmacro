@@ -76,4 +76,16 @@
       <mapper type="glob" from="*.html" to="*.txt"/>
     </copy>
   </target>
+
+  <target name="publish-doc" depends="doc"
+    description="publish the documentation in java.net via SVN">
+
+    <taskdef name="soimp" classname="org.kohsuke.soimp.Soimp">
+      <classpath>
+        <fileset dir="lib" includes="soimp*.jar, argsj*.jar" />
+      </classpath>
+    </taskdef>
+
+    <soimp dir="build/doc" repository="https://www.dev.java.net/svn/htmlmacro/trunk/www/doc" />
+  </target>
 </project>
