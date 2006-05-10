@@ -1,0 +1,22 @@
+<toc name="Sun theme example">
+  <!-- this portion is executed as the banner -->
+  <banner>
+    <a href="http://www.sun.com">Sun</a> Theme Demonstration
+  </banner>
+  <!-- this portion is excuted as the footer -->
+  <footer>
+    (C) Copyright Sun Microsystems
+  </footer>
+  <chapter name="chapter1">
+    <document name="main"
+              url="index.html"/>
+    <document name="another"
+              url="a.html"/>
+  </chapter>
+  <chapter name="chapter2">
+    <document name="Intro"
+              url="b.html"/>
+    <document name="Write Tagset"
+              url="c.html"/>
+  </chapter>
+</toc>

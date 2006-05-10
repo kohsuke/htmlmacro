@@ -1,0 +1,19 @@
+<project default="run">
+
+  <target name="run">
+    <taskdef name="htmlmacro" classname="com.sun.wts.tools.htmlmacro.HtmlMacroTask">
+      <classpath>
+        <pathelement path="../htmlmacro.jar" />
+      </classpath>
+    </taskdef>
+    <htmlmacro destdir="build">
+      <documents dir="doc" includes="*.html" />
+      <tags dir="../../tags" includes="**/*.tag" />
+      <property key="title" value="this is the title" />
+    </htmlmacro>
+    <copy todir="build">
+      <fileset dir="../../tags/sun" includes="style/*" />
+    </copy>
+  </target>
+
+</project>

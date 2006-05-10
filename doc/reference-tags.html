@@ -1,0 +1,52 @@
+<html>
+<head caption="Writing your own tag set">
+  <link rel="stylesheet" type="text/css" href="style/main.css"/>
+</head>
+<body>
+	<p>
+		Sometimes, it's convenient to define a macro once and use it in multiple places. You can do this by writing a tag file. This is analogous to JSP and its tag file.
+		A tag file is simply an XML jelly script written in a <tt>*.tag</tt> file. Suppose the following file is saved in <tt>floatingBox.tag</tt>.
+
+<pre class=code><xmp>
+<j:jelly xmlns:j="jelly:core" xmlns:d="jelly:define">
+  <div style="box">
+    <div>$${title}</div>
+    <div>
+      <d:invokeBody />
+    </div>
+  </div>
+</j:jelly>
+</xmp></pre>
+	
+	<p>
+		This example can be used like this:
+
+<pre class=code><xmp>
+<html>
+  <body>
+    ...
+    <floatingBox title="Hello">
+      <span>Hello, Duke!</span>
+    </floatingBox>
+</xmp></pre>
+	
+	<p>
+		... which produces the following output:
+
+<pre class=code><xmp>
+<html>
+  <body>
+    ...
+    <div style="box">
+      <div>Hello</div>
+      <div>
+        <span>Hello, Duke!</span>
+      </div>
+    </div>
+</xmp></pre>
+
+	<p>
+		The attributes of the tag is available to the script as variables, and <tt>{jelly:define}invokeBody</tt> tag can be used to invoke the body of the tag. Tags can also access variables defined in its caller, just like JSP tag files.
+
+</body>
+</html>

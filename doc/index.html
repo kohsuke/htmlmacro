@@ -1,0 +1,60 @@
+<html>
+<head caption="Overview">
+  <link rel="stylesheet" type="text/css" href="style/main.css"/>
+</head>
+<body>
+	<h2>Overview</h2>
+	<p>
+		This tool is:
+	<ol>
+		<li>
+			<b>Macro-engine on top of HTML</b> that allows portions of the documentation to be generated programatically --- it's like JSP/JSTL outside the container, or even think of it as Lisp on top of HTML. Macros can be made reusable, and such reusable macro is called <b>tag set</b>.
+		<li>
+			<b>Tag set for software release notes</b>, AKA JAX-* tag set, which is built on top of the above programability. This template is ideal for generating release note documents, like the one you are seeing right now.
+	</ol>
+	
+	<h2>Why?</h2>
+	<p>
+		To satisfy common use case like the following:
+	<ol>
+		<li>
+			Release notes need to refer to the version number of the software in all over the places, so you don't want to just hand-write them in HTML. Instead, you want a variable. With this tool, you can do that by writing <tt>$${variableName}</tt> and have the tool replace it by the actual value given by the Ant build script.
+		<li>
+			Release notes often need be slightly different depending on the delivery vehicles. This tool lets you define such conditional statement like
+<pre class=code>
+&lt;j:if test="$${isJWSDP}" xmlns:j="jelly:core">
+  ... this shows up only in JWSDP ...
+&lt;/j:if>
+</pre>
+			Or even a switch/case statement.
+		<li>
+			Release notes often need to list jar files, or list all the samples in the distribution. This tool enables complete programability over those. So instead of listing them in HTML and suffer the inevitable inconsistency, you can simply write a little script and have the tool generate it.
+		<li>
+			Release notes often need to list a changelog. Or a list of bugs that are fixed. And you want to format them nicely. Scriptability allows you to just write a little macro and then put the following in your source HTML:
+<pre class=code><xmp>
+<bugfixes>
+  <bug>611352</bug>
+  <bug>614252</bug>
+  <bug>611418</bug>
+</bugfixes>
+</xmp></pre>
+			... and have the tool convert this into a nice table complete with hyperlink and coloring based on severity and everything else you need.
+	</ol>
+	
+	
+	
+	<h2>How does it work?</h2>
+	<p>
+		Typical workflow of this tool goes like this:
+	<ol>
+		<li>You write a set of documents in HTML, images, and CSS, just like you do normally. In particular, HTMLs need not be XHTML.
+		<li>You embed macros in your HTML here and there.
+		<li>As a part of the build script, run <a href="antTask.html">the docgen ant task</a> and generate the final HTML.
+	</ol>
+	
+	<h2>Getting Started</h2>
+	<p>
+		The quickest way to get started is to use <a href="jax.html">the JAX-* tag set</a>. For more details about how to write your own macro, see <a href="reference.html>the reference</a>.
+	
+</body>
+</html>

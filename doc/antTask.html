@@ -1,0 +1,70 @@
+<html>
+<head caption="Docgen Ant Task">
+  <link rel="stylesheet" type="text/css" href="style/main.css"/>
+</head>
+<body>
+	The <tt>docgen.jar</tt> file contains an Ant task implementation, to run the tool from your build script. To use this, first define the task as follows:
+<pre class=ant-example><xmp>
+<taskdef name="docgen" classname="com.sun.wts.tools.htmlmacro.HtmlMacroTask">
+  <classpath>
+    <pathelement path="path/to/docgen.jar" />
+  </classpath>
+</taskdef>
+</xmp></pre>
+
+<p>
+	When running scripts inside HTMLs, this ant task makes a lot of variables available to it. Specifically,
+<ol>
+	<li>All Ant properties implicitly visible by the &lt;docgen> task
+	<li>Properties explicitly specified by the &lt;docgen>/&lt;property> tag
+	<li>All system properties visible to Ant
+</ol>
+<p>
+	Therefore, for example, if your build script defines a variable <tt>env.BUILD_ID</tt>, then you can refer to it simply as <tt>$${env.BUILD_ID}</tt>. The same goes to all three kinds of variables. If there are name collisions among the variables in these groups, the later one wins. In particular, this allows a system property to override the build script setting. To pass in system property to Ant, use <tt>ANT_OPTS</tt> environment variable.
+	
+
+<h2>Synopsis</h2>
+<h3>Parameter Attributes</h3>
+<table border=1>
+	<tr>
+		<th>Attribute</th>
+		<th>Description</th>
+		<th>Required</th>
+	</tr>
+	<tr>
+		<td>destdir
+		<td>The directory in which the generated HTML files are placed. For example, "<tt>build/docs</tt>". Note that non-HTML resources, such as CSS and images, need to be copied separately.
+		<td>Yes
+</table>
+
+<h3>Nested Elements</h3>
+<h4>classpath element</h4>
+<p>
+	If your source HTMLs use additional Jelly tag libraries, refer to those jars by using this nested classpath element. For the syntax, see <a href="http://jakarta.apache.org/ant/manual/using.html#path">"path-like structure"</a>.
+
+<h4>tags element</h4>
+	This <a href="http://jakarta.apache.org/ant/manual/CoreTypes/fileset.html">fileset</a> specifies the tag set that use (the <tt>*.tag</tt> files.)
+
+<h4>documents element</h4>
+	This <a href="http://jakarta.apache.org/ant/manual/CoreTypes/fileset.html">fileset</a> specifies the source HTML documents to be processed. This element is required.
+
+<h4>property element</h4>
+<p>
+	Assign initial values to variables. See <a href="http://ant.apache.org/manual/CoreTasks/exec.html#env">the &lt;env> element</a> for the syntax.
+
+
+<h3>Examples</h3>
+<p>
+	The following example picks up HTML files in <tt>docs</tt> and generates the result into <tt>build/doc</tt>.
+	The And property value <tt>$${build.id}</tt> is used to initialze the <tt>IMPL_VERSION</tt> variable in the documentation, allowing build id to be printed everywhere in the documentation.
+	
+<pre class=ant-example><xmp>
+<docgen destdir="build/doc">
+  <documents dir="doc" includes="*.html" />
+  <tags dir="doc/tags" includes="**/*.tag" />
+  <property key="javaNetProjectName" value="docgen" />
+  <property key="IMPL_VERSION" value="$${build.id}" />
+</docgen>
+</xmp></pre>
+</body>
+</html>

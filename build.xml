@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+ The contents of this file are subject to the terms
+ of the Common Development and Distribution License
+ (the "License").  You may not use this file except
+ in compliance with the License.
+
+ You can obtain a copy of the license at
+ https://jwsdp.dev.java.net/CDDLv1.0.html
+ See the License for the specific language governing
+ permissions and limitations under the License.
+
+ When distributing Covered Code, include this CDDL
+ HEADER in each file and include the License file at
+ https://jwsdp.dev.java.net/CDDLv1.0.html  If applicable,
+ add the following below this CDDL HEADER, with the
+ fields enclosed by brackets "[]" replaced with your
+ own identifying information: Portions Copyright [yyyy]
+ [name of copyright owner]
+-->
+<project name="htmlmacro" basedir="." default="jar">
+
+  <tstamp />
+  <property name="build.id" value="private-${DSTAMP}-${TSTAMP}" />
+
+  <target name="compile">
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes" debug="true">
+      <classpath>
+        <fileset dir="lib" includes="*.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar destfile="build/htmlmacro.jar">
+      <fileset dir="build/classes"/>
+      <!-- make it an uber jar -->
+      <zipgroupfileset dir="lib" includes="*.jar" />
+    </jar>
+    <zip destfile="build/htmlmacro.src.zip">
+      <fileset dir="src"/>
+    </zip>
+  </target>
+
+  <target name="dist" depends="jar, doc">
+    <zip file="build/htmlmacro.zip">
+      <fileset dir="build" includes="doc/**/*, htmlmacro.jar, htmlmacro.src.zip" />
+      <fileset dir="." includes="tags/**/*, examples/**/*" excludes="examples/*/build" />
+    </zip>
+  </target>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="doc" depends="compile">
+    <taskdef name="htmlmacro" classname="com.sun.wts.tools.htmlmacro.HtmlMacroTask">
+      <classpath>
+        <pathelement path="build/classes" />
+        <fileset dir="lib" includes="*.jar" />
+      </classpath>
+    </taskdef>
+    <htmlmacro destdir="build/doc">
+      <documents dir="doc" includes="*.html" />
+      <tags dir="tags" includes="**/*.tag" />
+      <!--property key="javaNetProjectName" value="htmlmacro" /-->
+      <property key="IMPL_VERSION" value="${build.id}" />
+    </htmlmacro>
+    <copy todir="build/doc">
+      <fileset dir="tags/sun" includes="style/*" />
+      <fileset dir="doc" includes="toc.xml, style/*" />
+    </copy>
+    <copy todir="build/doc">
+      <fileset dir="doc" includes="*.html" />
+      <mapper type="glob" from="*.html" to="*.txt"/>
+    </copy>
+  </target>
+</project>

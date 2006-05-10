@@ -1,0 +1,28 @@
+<html>
+<head caption="Inline Program">
+  <link rel="stylesheet" type="text/css" href="style/main.css"/>
+</head>
+<body>
+	<p>
+		The programability is achieved by embedding <a href="http://jakarta.apache.org/commons/jelly/index.html">Jelly</a> tags inside HTML. Jelly tags are somewhat similar to JSP tags, but more powerful.
+	
+	<p>
+		For example, the following example generates a sequence number from 1 to 10:
+
+<pre class=code><xmp>
+<html xmlns:j="jelly:core">
+  ...
+  <j:forEach var="i" begin="1" end="10">
+    <p>$${i}</p>
+  </j:forEach>
+</xmp></pre>
+	<p>
+		<a href="http://jakarta.apache.org/commons/jelly/tags.html#core:forEach">&lt;j:forEach></a> is a Jelly tag that repeats the body multiples times. The namespace URI and the local name identifies a particular Jelly tag, and prefix is merely a proxy to the namespace URI (as it should be in XML.)
+	<p>
+		<tt>$${i}</tt> is a variable substitution. Again just like JSP, this supports <a href="http://jakarta.apache.org/commons/jexl/">an extended EL</a>.
+
+	<p>
+		There are <a href="http://jakarta.apache.org/commons/jelly/libs/index.html">a large number Jelly tag libraries</a> that you can use out of box. If you choose, <a href="http://jakarta.apache.org/commons/jelly/overview.html">you can even write custom Jelly tag libraries by yourself</a> in Java to add more programability.
+	
+</body>
+</html>
