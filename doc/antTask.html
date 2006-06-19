@@ -35,6 +35,11 @@
 		<td>destdir
 		<td>The directory in which the generated HTML files are placed. For example, "<tt>build/docs</tt>". Note that non-HTML resources, such as CSS and images, need to be copied separately.
 		<td>Yes
+	<tr>
+		<td>xhtml
+		<td>
+			By default, htmlmacro reads input documents as HTML, not XML, so that you don't have to write "&lt;br />" or quote every attribute value. However, this process has other side effects --- for example, it moves any HTML content tags in the &lt;head> block inside the body, and this may cause unexpected effects if you use Jelly tags like &lt;define:taglib> inside a header. If set to true, htmlmacro will read inputs as XHTML, and disable all such side effects.
+		<td>No. Defaults to "false"
 </table>
 
 <h3>Nested Elements</h3>

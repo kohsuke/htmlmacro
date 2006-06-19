@@ -41,6 +41,11 @@ public class HtmlMacroTask extends Task {
     private final List<File> tags = new ArrayList<File>();
 
     /**
+     * Reads the source file as HTML.
+     */
+    private boolean html = true;
+
+    /**
      * Source files to process.
      */
     private FileSet documents;
@@ -86,6 +91,13 @@ public class HtmlMacroTask extends Task {
         this.documents = fs;
     }
 
+    /**
+     * True to read the source files as HTML.
+     */
+    public void setXhtml(boolean value) {
+        this.html = !value;
+    }
+
     private void populateFiles(FileSet fs, List<File> r) {
         DirectoryScanner ds = fs.getDirectoryScanner(getProject());
         String[] includedFiles = ds.getIncludedFiles();
@@ -100,7 +112,7 @@ public class HtmlMacroTask extends Task {
         classpath.setProject(getProject());
         destdir.mkdirs();
 
-        JellyContext context = new JellyContextEx();
+        JellyContext context = html ? new JellyContextEx() : new JellyContext();
 
         // just dump all the Ant properties first.
         context.getVariables().putAll(getProject().getProperties());
