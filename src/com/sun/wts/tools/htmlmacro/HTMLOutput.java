@@ -8,7 +8,13 @@ import org.xml.sax.SAXException;
 
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.util.Stack;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.nio.charset.CharsetEncoder;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -16,6 +22,22 @@ import java.util.Stack;
 public class HTMLOutput extends XMLOutput {
     public static XMLOutput create(OutputStream os) throws UnsupportedEncodingException {
         return createXMLOutput(new HTMLWriter(os, OutputFormat.createPrettyPrint()) {
+
+            /**
+             * {@link Charset} being used for the encoding.
+             */
+            private Charset charset;
+            private CharsetEncoder encoder;
+
+            protected Writer createWriter(OutputStream outStream, String encoding) throws UnsupportedEncodingException {
+                try {
+                    charset = Charset.forName(encoding);
+                    encoder = charset.newEncoder();
+                } catch (UnsupportedCharsetException e) {
+                    throw new UnsupportedEncodingException(encoding);
+                }
+                return new BufferedWriter(new OutputStreamWriter(outStream,charset));
+            }
 
             class State {
                 private final boolean newLines;
@@ -54,6 +76,10 @@ public class HTMLOutput extends XMLOutput {
             public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
                 super.endElement(namespaceURI, localName, qName);
                 states.pop().restore();
+            }
+
+            protected boolean shouldEncodeChar(char c) {
+                return super.shouldEncodeChar(c) || c==160/*nbsp*/ || !encoder.canEncode(c);
             }
         });
     }

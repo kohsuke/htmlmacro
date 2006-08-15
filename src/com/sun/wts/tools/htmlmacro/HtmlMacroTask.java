@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.nio.charset.Charset;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -149,6 +150,8 @@ public class HtmlMacroTask extends Task {
                 root.setTagBody(child);
                 ((TagScript)child).setParent(root);
                 root.addAttribute("trim",new ConstantExpression(false));
+
+                Charset cs = Charset.defaultCharset();
 
                 FileOutputStream out = new FileOutputStream(new File(destdir,value));
                 try {
