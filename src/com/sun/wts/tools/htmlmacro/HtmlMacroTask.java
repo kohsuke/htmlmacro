@@ -74,6 +74,8 @@ public class HtmlMacroTask extends Task {
     }
 
     public void addConfiguredProperty(Environment.Variable v) {
+        if(v.getKey()==null)
+            return;
         properties.put(v.getKey(),v.getValue());
     }
 
