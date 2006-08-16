@@ -53,6 +53,15 @@ public class HtmlMacroTask extends Task {
 
     private File destdir;
 
+    /**
+     * Encoding of the file to be generated.
+     * <p>
+     * When HTML files are loaded locally, it's assumed to be in the system default encoding,
+     * so we can't reliably use any encoding. The best bet is to use us-ascii, since
+     * it's a subet of most of the encodings used today.
+     */
+    private String encoding = "us-ascii";
+
     private Map<String,String> properties = new HashMap<String,String>();
 
 
@@ -99,6 +108,10 @@ public class HtmlMacroTask extends Task {
      */
     public void setXhtml(boolean value) {
         this.html = !value;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 
     private void populateFiles(FileSet fs, List<File> r) {
@@ -155,7 +168,7 @@ public class HtmlMacroTask extends Task {
 
                 FileOutputStream out = new FileOutputStream(new File(destdir,value));
                 try {
-                    XMLOutput xo = HTMLOutput.create(out);
+                    XMLOutput xo = HTMLOutput.create(out,encoding);
 
                     root.run(context,xo);
                     xo.close();

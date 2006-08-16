@@ -20,8 +20,10 @@ import java.nio.charset.CharsetEncoder;
  * @author Kohsuke Kawaguchi
  */
 public class HTMLOutput extends XMLOutput {
-    public static XMLOutput create(OutputStream os) throws UnsupportedEncodingException {
-        return createXMLOutput(new HTMLWriter(os, OutputFormat.createPrettyPrint()) {
+    public static XMLOutput create(OutputStream os, String encoding) throws UnsupportedEncodingException {
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding(encoding);
+        return createXMLOutput(new HTMLWriter(os, format) {
 
             /**
              * {@link Charset} being used for the encoding.

@@ -40,6 +40,11 @@
 		<td>
 			By default, htmlmacro reads input documents as HTML, not XML, so that you don't have to write "&lt;br />" or quote every attribute value. However, this process has other side effects --- for example, it moves any HTML content tags in the &lt;head> block inside the body, and this may cause unexpected effects if you use Jelly tags like &lt;define:taglib> inside a header. If set to true, htmlmacro will read inputs as XHTML, and disable all such side effects.
 		<td>No. Defaults to "false"
+	<tr>
+		<td>encoding
+		<td>
+			Encoding of the generated HTML files. When HTML files are loaded from disk via the <tt>file://</tt> protocol, they are loaded by using the system default encoding, unless otherwise stated in the meta tag. So it's hard to reliably use any encoding without the meta tag. For this reason, the default is US-ASCII, which is most likely work because most system default encoding is a superset of US-ASCII. If your document contains a lot of characters beyond US-ASCII, specify the encoding here and make sure that your documents have the proper meta tag.
+		<td>No. Defaults to "US-ASCII"
 </table>
 
 <h3>Nested Elements</h3>
