@@ -37,6 +37,9 @@
       <fileset dir="build/classes"/>
       <!-- make it an uber jar -->
       <zipgroupfileset dir="lib" includes="*.jar" />
+      <manifest>
+        <attribute name="Build-Id" value="${build.id}"/>
+      </manifest>
     </jar>
     <zip destfile="build/htmlmacro.src.zip">
       <fileset dir="src"/>
