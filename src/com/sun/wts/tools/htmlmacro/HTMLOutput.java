@@ -23,6 +23,7 @@ public class HTMLOutput extends XMLOutput {
     public static XMLOutput create(OutputStream os, String encoding) throws UnsupportedEncodingException {
         OutputFormat format = OutputFormat.createPrettyPrint();
         format.setEncoding(encoding);
+        format.setTrimText(false);
         return createXMLOutput(new HTMLWriter(os, format) {
 
             /**
