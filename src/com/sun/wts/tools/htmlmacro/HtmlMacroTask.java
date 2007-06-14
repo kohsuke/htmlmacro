@@ -49,7 +49,7 @@ public class HtmlMacroTask extends Task {
     /**
      * Source files to process.
      */
-    private FileSet documents;
+    private List<FileSet> documents = new ArrayList<FileSet>();
 
     private File destdir;
 
@@ -100,7 +100,7 @@ public class HtmlMacroTask extends Task {
      * Docs to process.
      */
     public void addConfiguredDocuments( FileSet fs ) {
-        this.documents = fs;
+        this.documents.add(fs);
     }
 
     /**
@@ -146,40 +146,42 @@ public class HtmlMacroTask extends Task {
         // make the tag lib from config files
         context.registerTagLibrary("",new TagLibraryImpl(this,context,tags));
 
-        DirectoryScanner ds = documents.getDirectoryScanner(getProject());
-        String[] includedFiles = ds.getIncludedFiles();
-        File baseDir = ds.getBasedir();
+        for (FileSet document : documents) {
+            DirectoryScanner ds = document.getDirectoryScanner(getProject());
+            String[] includedFiles = ds.getIncludedFiles();
+            File baseDir = ds.getBasedir();
 
-        try {
-            for (String value : includedFiles) {
-                File src = new File(baseDir, value);
-                log("Processing "+src, Project.MSG_INFO);
+            try {
+                for (String value : includedFiles) {
+                    File src = new File(baseDir, value);
+                    log("Processing "+src, Project.MSG_INFO);
 
-                context.getVariables().put("fileName",src.getName());
+                    context.getVariables().put("fileName",src.getName());
 
-                // wrap the whole thing into JellyTag to prevent whitespace trimming
-                TagScript root = TagScript.newInstance(JellyTag.class);
-                Script child = context.compileScript(src.toURL());
-                root.setTagBody(child);
-                ((TagScript)child).setParent(root);
-                root.addAttribute("trim",new ConstantExpression(false));
+                    // wrap the whole thing into JellyTag to prevent whitespace trimming
+                    TagScript root = TagScript.newInstance(JellyTag.class);
+                    Script child = context.compileScript(src.toURL());
+                    root.setTagBody(child);
+                    ((TagScript)child).setParent(root);
+                    root.addAttribute("trim",new ConstantExpression(false));
 
-                Charset cs = Charset.defaultCharset();
+                    Charset cs = Charset.defaultCharset();
 
-                FileOutputStream out = new FileOutputStream(new File(destdir,value));
-                try {
-                    XMLOutput xo = HTMLOutput.create(out,encoding);
+                    FileOutputStream out = new FileOutputStream(new File(destdir,value));
+                    try {
+                        XMLOutput xo = HTMLOutput.create(out,encoding);
 
-                    root.run(context,xo);
-                    xo.close();
-                } finally {
-                    out.close();
+                        root.run(context,xo);
+                        xo.close();
+                    } finally {
+                        out.close();
+                    }
                 }
+            } catch (JellyException e) {
+                throw new BuildException(e);
+            } catch (IOException e) {
+                throw new BuildException(e);
             }
-        } catch (JellyException e) {
-            throw new BuildException(e);
-        } catch (IOException e) {
-            throw new BuildException(e);
         }
     }
 }
