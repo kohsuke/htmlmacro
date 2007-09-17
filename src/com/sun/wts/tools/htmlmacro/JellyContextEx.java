@@ -19,6 +19,7 @@ public class JellyContextEx extends JellyContext {
         SAXParser p = new SAXParser();
         try {
             p.setFeature("http://xml.org/sax/features/namespaces",true);
+            p.setFeature("http://xml.org/sax/features/namespaceprefixes",false);
             p.setProperty("http://cyberneko.org/html/properties/names/elems","match");
         } catch (SAXException e) {
             throw new Error(e);
