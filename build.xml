@@ -25,7 +25,7 @@
 
   <target name="compile">
     <mkdir dir="build/classes"/>
-    <javac srcdir="src" destdir="build/classes" debug="true">
+    <javac srcdir="src" destdir="build/classes" source="1.5" target="1.5" debug="true">
       <classpath>
         <fileset dir="lib" includes="*.jar"/>
       </classpath>
