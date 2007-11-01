@@ -20,11 +20,14 @@ import org.apache.tools.ant.types.Reference;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.nio.charset.Charset;
+import java.util.Properties;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -146,6 +149,8 @@ public class HtmlMacroTask extends Task {
         // make the tag lib from config files
         context.registerTagLibrary("",new TagLibraryImpl(this,context,tags));
 
+        registerTagLibrariesFromClasspath(context);
+
         for (FileSet document : documents) {
             DirectoryScanner ds = document.getDirectoryScanner(getProject());
             String[] includedFiles = ds.getIncludedFiles();
@@ -182,6 +187,30 @@ public class HtmlMacroTask extends Task {
             } catch (IOException e) {
                 throw new BuildException(e);
             }
+        }
+    }
+
+    /**
+     * Look up <tt>META-INF/jelly/taglibs</tt> and register them all
+     */
+    private void registerTagLibrariesFromClasspath(JellyContext context) {
+        try {
+            Enumeration<URL> e = context.getClassLoader().getResources("META-INF/jelly/taglibs");
+            while(e.hasMoreElements()) {
+                URL url = e.nextElement();
+                try {
+                    Properties p = new Properties();
+                    p.load(url.openStream());
+                    for (Map.Entry<Object,Object> line : p.entrySet()) {
+                        log("Picked up taglib "+line.getKey(), Project.MSG_INFO);
+                        context.registerTagLibrary(line.getKey().toString(),line.getValue().toString());
+                    }
+                } catch (IOException x) {
+                    throw new BuildException("Failed to load "+url,x);
+                }
+            }
+        } catch (IOException x) {
+            throw new BuildException("Failed to read META-INF/jelly/tagslib",x);
         }
     }
 }
