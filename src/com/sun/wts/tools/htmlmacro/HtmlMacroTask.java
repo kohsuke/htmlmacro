@@ -146,10 +146,10 @@ public class HtmlMacroTask extends Task {
         context.setClassLoader(
             new AntClassLoader(getClass().getClassLoader(),getProject(),classpath, true));
 
+        registerTagLibrariesFromClasspath(context);
+        
         // make the tag lib from config files
         context.registerTagLibrary("",new TagLibraryImpl(this,context,tags));
-
-        registerTagLibrariesFromClasspath(context);
 
         for (FileSet document : documents) {
             DirectoryScanner ds = document.getDirectoryScanner(getProject());
