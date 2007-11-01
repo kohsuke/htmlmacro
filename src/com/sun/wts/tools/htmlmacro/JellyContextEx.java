@@ -1,7 +1,6 @@
 package com.sun.wts.tools.htmlmacro;
 
 import org.apache.commons.jelly.JellyContext;
-import org.apache.commons.jelly.TagLibrary;
 import org.apache.commons.jelly.parser.XMLParser;
 import org.cyberneko.html.parsers.SAXParser;
 import org.xml.sax.SAXException;

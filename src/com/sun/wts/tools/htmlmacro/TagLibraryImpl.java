@@ -1,14 +1,14 @@
 package com.sun.wts.tools.htmlmacro;
 
-import org.apache.commons.jelly.TagLibrary;
-import org.apache.commons.jelly.Tag;
+import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.Script;
-import org.apache.commons.jelly.JellyContext;
-import org.apache.commons.jelly.impl.TagFactory;
+import org.apache.commons.jelly.Tag;
+import org.apache.commons.jelly.TagLibrary;
 import org.apache.commons.jelly.impl.DynamicTag;
-import org.apache.tools.ant.Project;
+import org.apache.commons.jelly.impl.TagFactory;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.xml.sax.Attributes;
 

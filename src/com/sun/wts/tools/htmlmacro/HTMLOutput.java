@@ -6,15 +6,15 @@ import org.dom4j.io.OutputFormat;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import java.io.BufferedWriter;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.util.Stack;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.Stack;
 
 /**
  * @author Kohsuke Kawaguchi

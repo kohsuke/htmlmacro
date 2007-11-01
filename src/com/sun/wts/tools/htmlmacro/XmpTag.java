@@ -1,9 +1,9 @@
 package com.sun.wts.tools.htmlmacro;
 
+import org.apache.commons.jelly.JellyTagException;
+import org.apache.commons.jelly.MissingAttributeException;
 import org.apache.commons.jelly.TagSupport;
 import org.apache.commons.jelly.XMLOutput;
-import org.apache.commons.jelly.MissingAttributeException;
-import org.apache.commons.jelly.JellyTagException;
 
 /**
  * Once read into XML, XMP becomes harmful, so remove it.
